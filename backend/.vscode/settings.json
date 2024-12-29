@@ -1,0 +1,16 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5433,
+            "driver": "PostgreSQL",
+            "name": "meet",
+            "database": "mydatabase",
+            "username": "postgres",
+            "password": "River",
+            "connectionTimeout": 30
+        }
+    ],
+    "liveServer.settings.port": 5501
+}
