@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import ChatInput from './ChatInput';
 import ResponseArea from './ResponseArea';
 import { Message } from '../../types/chat';
+import { useAuth } from '../../context/AuthContext';
 
 interface ChatSectionProps {
   sessionId: string;
@@ -17,12 +18,13 @@ export default function ChatSection({ sessionId, messages, onUpdateMessages, onF
       chatContainer.scrollTop = 0;
     }
   }, [sessionId]);
-
+  const { user } = useAuth();
   const fetchBotResponse = async (content: string): Promise<Message> => {
     try {
       const requestBody = {
         message: content,
-        session_id: sessionId
+        session_id: sessionId,
+        username : user?.username
       };
   
       const response = await fetch('http://localhost:8000/query/query', {

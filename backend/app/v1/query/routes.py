@@ -13,7 +13,7 @@ async def handle_user_query(request: QueryRequest, db=Depends(get_db)):
     Expects a query string and returns the processed response.
     """
     try:
-        result = process_user_query(request.message,request.session_id,db)
+        result = process_user_query(request.message,request.session_id, request.username,db)
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

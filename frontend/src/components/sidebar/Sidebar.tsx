@@ -1,7 +1,6 @@
 import React from 'react';
 import { MessageSquarePlus, MessagesSquare } from 'lucide-react';
 import { ChatSession } from '../../types/chat';
-import { useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   sessions: ChatSession[];
@@ -11,6 +10,9 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ sessions, onNewChat, onSelectSession, currentSessionId }: SidebarProps) {
+  // Remove duplicates based on session ID
+  const uniqueSessions = Array.from(new Map(sessions.map(session => [session.id, session])).values());
+  console.log(uniqueSessions)
   return (
     <div className="h-full bg-teal-50 w-64 p-4 flex flex-col">
       <button 
@@ -22,7 +24,7 @@ export default function Sidebar({ sessions, onNewChat, onSelectSession, currentS
       </button>
       
       <div className="flex-1 overflow-y-auto space-y-2">
-        {sessions.map((session) => (
+        {uniqueSessions.map((session) => (
           <div
             key={session.id}
             onClick={() => onSelectSession(session.id)}
@@ -33,7 +35,7 @@ export default function Sidebar({ sessions, onNewChat, onSelectSession, currentS
             <div className="flex-1 truncate">
               <p className="text-sm text-gray-800">{session.title}</p>
               <p className="text-xs text-gray-500">
-                {new Date(session.timestamp).toLocaleDateString()}
+                {/* {new Date(session.timestamp).toLocaleDateString()} */}
               </p>
             </div>
           </div>

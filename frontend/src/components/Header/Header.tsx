@@ -17,7 +17,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
           <Menu className="w-5 h-5 text-gray-600" />
         </button>
         <Bot className="w-6 h-6 text-teal-600" />
-        <h1 className="text-xl font-semibold text-gray-800">AI Assistant</h1>
+        <h1 className="text-xl font-semibold text-gray-800">
+          <span className="text-green-800">Compl</span>
+          <span className="text-orange-500">AI</span>
+          <span className="text-green-800"> Genie</span>
+        </h1>
+
       </div>
       
       <ProfileButton />

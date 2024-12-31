@@ -1,9 +1,38 @@
 import React from 'react';
 import { Bot, User } from 'lucide-react';
-import { Message } from '../../types/chat';
+
+type Metadata = {
+  title: string;
+  date_of_issue: string;
+  dept: string;
+  document_code: string;
+  section_summary: string;
+};
+
+type Message = {
+  isUser: boolean;
+  content: string;
+  timestamp: number | string | Date;
+  metadata?: Metadata[];
+};
 
 export default function ChatMessage({ message }: { message: Message }) {
   const { isUser, content, timestamp, metadata } = message;
+
+  // Helper to process text with bold markers
+  const processBoldText = (text: string) => {
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return (
+          <strong key={index} className="font-bold">
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
 
   // Helper to render formatted content
   const renderFormattedContent = (content: string) => {
@@ -20,35 +49,28 @@ export default function ChatMessage({ message }: { message: Message }) {
           } 
           // Numbered List (starts with "1." or "2." etc.)
           else if (line.match(/^\d+\./)) {
+            // Process bold text within numbered lines
             return (
               <p key={index} className="ml-4 text-gray-700">
-                {line}
+                {processBoldText(line)}
               </p>
             );
           } 
-          // Bullet points (starts with "- ")
+          // Bullet points or dashed lines (starts with "- ")
           else if (line.startsWith('- ')) {
+            // Handle the dash separately and process the rest for bold text
+            const textAfterDash = line.slice(2);
             return (
               <p key={index} className="ml-6 text-gray-700">
-                {line}
+                - {processBoldText(textAfterDash)}
               </p>
             );
-          } 
-          // Bold Text (wrapped in **)
-          else if (line.startsWith('**') && line.endsWith('**')) {
-            return (
-              <p
-                key={index}
-                className="font-semibold text-teal-500"
-                dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
-              />
-            );
-          } 
-          // Default text
+          }
+          // Default text handling
           else {
             return (
               <p key={index} className="text-sm text-gray-800">
-                {line}
+                {processBoldText(line)}
               </p>
             );
           }

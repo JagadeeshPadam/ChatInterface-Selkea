@@ -1,53 +1,4 @@
-# from datetime import datetime, time
-# from sqlalchemy import (
-#     Column, String, DateTime, Text, Time, ForeignKey, Integer, Float, Boolean
-# )
-# from sqlalchemy.ext.declarative import declarative_base
-# from sqlalchemy.orm import relationship
-# import pytz
-# from enum import Enum as PyEnum
-# from sqlalchemy import Enum
-# from pydantic import BaseModel
 
-# Base = declarative_base()
-
-# class User(Base):
-#     __tablename__ = "users"
-    
-#     id = Column(Integer, primary_key=True, index=True)
-#     username = Column(String, unique=True, index=True)
-#     hashed_password = Column(String)
-    
-#     chats = relationship("ChatSession", back_populates="user")
-
-# class ChatSession(Base):
-#     __tablename__ = "chat_sessions"
-    
-#     id = Column(Integer, primary_key=True, index=True)
-#     title = Column(String, index=True)
-#     user_id = Column(Integer, ForeignKey("users.id"))
-#     created_at = Column(String)
-    
-#     messages = relationship("Message", back_populates="session")
-#     user = relationship("User", back_populates="chats")
-
-# class Message(Base):
-#     __tablename__ = "messages"
-    
-#     id = Column(Integer, primary_key=True, index=True)
-#     content = Column(Text)
-#     is_user = Column(Boolean, default=True)
-#     timestamp = Column(String)
-#     session_id = Column(Integer, ForeignKey("chat_sessions.id"))
-    
-#     session = relationship("ChatSession", back_populates="messages")
-
-# class SignInRequest(BaseModel):
-#     username: str
-#     password: str
-    
-# class QueryRequest(BaseModel):
-#     message: str
 
 # app/models.pyfrom pydantic import BaseModel
 from pydantic import BaseModel
@@ -79,10 +30,12 @@ class User(Document):
 class QueryMessage(EmbeddedDocument):
     query = StringField(required=True)
     content = StringField(required=True)
+    timestamp = DateTimeField(default=datetime.utcnow)
     
 class Session(Document):
     session_id = StringField(unique=True, required=True)
-    # username = StringField(unique=True, required=True)
+    username = StringField(unique=True, required=True)
+    title = StringField(unique=True)
     created_at = DateTimeField(default=datetime.utcnow)
     messages = ListField(EmbeddedDocumentField(QueryMessage))  # List of messages
     
@@ -97,3 +50,12 @@ class SignInRequest(BaseModel):
 class QueryRequest(BaseModel):
     message: str
     session_id: str
+    username: str
+
+class SessionRequest(BaseModel):
+    username: str
+
+class SessionUpdateRequest(BaseModel):
+    session_id: str
+    title: str
+    username: str

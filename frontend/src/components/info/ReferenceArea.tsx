@@ -27,8 +27,8 @@ export default function ReferenceArea({ references = [] }: ReferenceAreaProps) {
           <div className="bg-white p-2 rounded border-l-4 border-teal-500">
             <p className="text-sm text-gray-700">{ref.highlight}</p>
           </div>
-          {/* Embed the PDF link dynamically if it exists
-          {ref.pdf_link && (
+          Embed the PDF link dynamically if it exists
+          {/* {ref.pdf_link && (
             <div className="mt-4">
               <h4 className="text-md font-medium text-gray-800">PDF Document</h4>
               <iframe
