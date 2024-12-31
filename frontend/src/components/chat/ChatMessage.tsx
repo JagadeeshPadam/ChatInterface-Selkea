@@ -10,6 +10,7 @@ type Metadata = {
 };
 
 type Message = {
+  query: string;
   isUser: boolean;
   content: string;
   timestamp: number | string | Date;
@@ -17,7 +18,7 @@ type Message = {
 };
 
 export default function ChatMessage({ message }: { message: Message }) {
-  const { isUser, content, timestamp, metadata } = message;
+  const { query, isUser, content, timestamp, metadata } = message;
 
   // Helper to process text with bold markers
   const processBoldText = (text: string) => {

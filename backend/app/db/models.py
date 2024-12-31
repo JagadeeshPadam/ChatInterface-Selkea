@@ -59,3 +59,7 @@ class SessionUpdateRequest(BaseModel):
     session_id: str
     title: str
     username: str
+
+class ChatsRequest(BaseModel):
+    session_id: str
+    username: str
