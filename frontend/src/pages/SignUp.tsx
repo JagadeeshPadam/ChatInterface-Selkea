@@ -117,7 +117,7 @@ export default function SignUp() {
         </form>
         {error && <p className="text-red-500 text-center mt-4">{error}</p>}
         <p className="mt-4 text-center text-sm text-gray-600">
-          Already have an account?{' '}
+          Already have an account?{''}
           <button
             onClick={() => navigate('/signin')}
             className="text-teal-600 hover:text-teal-700"
