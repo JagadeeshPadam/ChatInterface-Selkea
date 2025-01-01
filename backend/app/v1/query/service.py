@@ -40,10 +40,7 @@ def process_user_query(query: str, session_id:str, username : str, db, kb_id: st
         print(session)
         # Append the new query message
         new_message = QueryMessage(query=query, content=data['data']['answer'])
-        if session:
-            session.messages.append(new_message)
-        else:
-            session=Session(session_id=session_id, username=username, messages=[new_message])
+        session.messages.append(new_message)
         session.save()  # Save the user to MongoDB
         # Construct final response
         return {

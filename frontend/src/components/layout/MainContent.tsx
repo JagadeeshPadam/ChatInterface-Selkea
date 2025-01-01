@@ -52,7 +52,6 @@ export default function MainContent({ sessionId, messages = [], onUpdateMessages
       const requestBody={
         session_id: sessionId,
         username : user?.username
-
       }
       const response = await fetch('http://localhost:8000/chat/session_chats', {
         method: 'POST',
@@ -68,11 +67,22 @@ export default function MainContent({ sessionId, messages = [], onUpdateMessages
 
       const data = await response.json();
       console.log(data)
-      const formattedMessages: Message[] = data.messages.map((msg: any) => ({
-        query: msg.query,
-        content: msg.content,
-        timestamp: new Date(msg.timestamp.$date),
-      }));
+      const formattedMessages: Message[] = data.messages.flatMap((msg: any) => [
+        {
+          id: `${msg.timestamp.$date}-query`, // Unique ID for the query
+          content: msg.query,                // The query as content
+          isUser: true,                      // User message
+          timestamp: new Date(msg.timestamp.$date).toISOString(),
+        },
+        {
+          id: `${msg.timestamp.$date}-content`, // Unique ID for the content
+          content: msg.content,                 // Bot's response
+          isUser: false,                        // Bot message
+          timestamp: new Date(msg.timestamp.$date).toISOString(),
+          metadata: msg.metadata || undefined, // Include metadata if available
+        },
+      ]);
+      
 
       onUpdateMessages(formattedMessages); // Update messages in the parent state
     } catch (error) {

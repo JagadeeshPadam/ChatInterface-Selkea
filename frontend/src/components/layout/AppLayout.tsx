@@ -115,17 +115,27 @@ export default function AppLayout() {
         username: user?.username,
       });
       const fetchedSessions: ChatSession[] = response.data.session;
-      setSessions(fetchedSessions);
-      // Set the first session as the current session, or create a new one if none exists
+  
       if (fetchedSessions.length > 0) {
-        setCurrentSessionId(fetchedSessions[0].id);
+        // Sort sessions by `created_at` in descending order
+        const sortedSessions = fetchedSessions.sort(
+          (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        );
+  
+        // Set the current session ID to the most recent session
+        setCurrentSessionId(sortedSessions[-1].id);
       } else {
+        // Create a new session if no sessions exist
         createNewSession();
       }
+  
+      // Update sessions state
+      setSessions(fetchedSessions);
     } catch (error) {
       console.error('Error fetching sessions:', error);
     }
   };
+  
 
   const createNewSession = async () => {
     try {

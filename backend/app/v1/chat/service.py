@@ -35,6 +35,7 @@ def update_user_session(session_id: str, username: str, title: str, db):
 def create_user_session(username:str, db):
     session_id=str(uuid.uuid4())
     session = Session(username=username, session_id=session_id)
+    session.save()
     return session.session_id  # Fetch all chat sessions from MongoDB
 
 

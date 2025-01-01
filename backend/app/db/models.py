@@ -34,8 +34,8 @@ class QueryMessage(EmbeddedDocument):
     
 class Session(Document):
     session_id = StringField(unique=True, required=True)
-    username = StringField(unique=True, required=True)
-    title = StringField(unique=True)
+    username = StringField(required=True)
+    title = StringField()
     created_at = DateTimeField(default=datetime.utcnow)
     messages = ListField(EmbeddedDocumentField(QueryMessage))  # List of messages
     
