@@ -47,7 +47,7 @@ export default function ChatMessage({ message }: { message: Message }) {
                 {line.replace('### ', '')}
               </h3>
             );
-          } 
+          }
           // Numbered List (starts with "1." or "2." etc.)
           else if (line.match(/^\d+\./)) {
             // Process bold text within numbered lines
@@ -56,7 +56,7 @@ export default function ChatMessage({ message }: { message: Message }) {
                 {processBoldText(line)}
               </p>
             );
-          } 
+          }
           // Bullet points or dashed lines (starts with "- ")
           else if (line.startsWith('- ')) {
             // Handle the dash separately and process the rest for bold text
@@ -91,6 +91,13 @@ export default function ChatMessage({ message }: { message: Message }) {
 
       {/* Message Content */}
       <div className={`flex-1 max-w-[80%] space-y-2 ${isUser ? 'items-end text-white' : 'items-start'}`}>
+        {/* Query */}
+        {query && !isUser && (
+          <div className="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded-md">
+            <strong>Query:</strong> {query}
+          </div>
+        )}
+
         {/* Content */}
         <div className={`p-4 rounded-2xl ${isUser ? 'bg-teal-600 text-white ml-auto' : 'bg-teal-50 text-gray-800'}`}>
           {renderFormattedContent(content)}
