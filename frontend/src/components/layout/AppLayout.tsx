@@ -123,7 +123,7 @@ export default function AppLayout() {
         );
   
         // Set the current session ID to the most recent session
-        setCurrentSessionId(sortedSessions[-1].id);
+        setCurrentSessionId(sortedSessions[0].id);
       } else {
         // Create a new session if no sessions exist
         createNewSession();
